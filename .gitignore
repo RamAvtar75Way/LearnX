@@ -5,41 +5,54 @@
 *.swp
 .DS_Store
 .atom/
-.build/
 .buildlog/
 .history
 .svn/
-.swiftpm/
-migrate_working_dir/
 
-# IntelliJ related
+# IntelliJ
+.idea/
 *.iml
 *.ipr
 *.iws
-.idea/
+out/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# Visual Studio Code
+.vscode/
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# Flutter/Dart/Pub
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
-/build/
-/coverage/
+build/
+appdata/
 
-# Symbolication related
-app.*.symbols
+# Android
+android/local.properties
+android/gradle/
+android/.gradle/
+android/app/build/
+android/app/google-services.json
+android/fastlane/
 
-# Obfuscation related
-app.*.map.json
+# iOS
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/app.flx
+ios/Flutter/app.zip
+ios/Flutter/flutter_assets/
+ios/ServiceDefinitions.json
+ios/Runner/GeneratedPluginRegistrant.*
+ios/fastlane/
 
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# Web
+web/icons/Icon-192.png
+web/icons/Icon-512.png
+web/icons/Icon-maskable-192.png
+web/icons/Icon-maskable-512.png
+
+# Exceptions to above rules.
+!/android/app/src/main/res/values/strings.xml

@@ -5,6 +5,7 @@ import 'package:chewie/chewie.dart';
 import '../../models/lesson_model.dart';
 import 'package:provider/provider.dart';
 import '../../services/course_service.dart';
+import '../../services/auth_service.dart';
 
 class LessonPlayerScreen extends StatefulWidget {
   final Lesson lesson;
@@ -95,13 +96,18 @@ class _LessonPlayerScreenState extends State<LessonPlayerScreen> with SingleTick
         actions: [
           Consumer<CourseService>(
             builder: (context, courseService, child) {
-              final isDownloaded = courseService.isLessonDownloaded(widget.lesson.id);
+              final authService = Provider.of<AuthService>(context, listen: false);
+              final userId = authService.userModel?.uid;
+              
+              if (userId == null) return const SizedBox.shrink();
+
+              final isDownloaded = courseService.isLessonDownloaded(userId, widget.lesson.id);
               return IconButton(
                 icon: Icon(isDownloaded ? Icons.download_done : Icons.download_for_offline_outlined),
                 tooltip: isDownloaded ? "Remove Download" : "Download for Offline",
                 color: isDownloaded ? Colors.green : null,
                 onPressed: () async {
-                   await courseService.toggleLessonDownload(widget.lesson.id);
+                   await courseService.toggleLessonDownload(userId, widget.lesson.id);
                    if (context.mounted) {
                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
                      ScaffoldMessenger.of(context).showSnackBar(

@@ -79,9 +79,10 @@ class CourseService with ChangeNotifier {
     }
 
     // Load Downloads
-    final downloadsJson = _prefs?.getString('downloads_db');
+    final downloadsJson = _prefs?.getString('user_downloads_db');
     if (downloadsJson != null) {
-      _mockDownloadedLessons = List<String>.from(jsonDecode(downloadsJson));
+      final Map<String, dynamic> decoded = jsonDecode(downloadsJson);
+      _mockDownloads = decoded.map((key, value) => MapEntry(key, List<String>.from(value)));
     }
 
     notifyListeners();
@@ -102,23 +103,29 @@ class CourseService with ChangeNotifier {
 
     await _prefs!.setString('enrollments_db', jsonEncode(_mockEnrollments));
     await _prefs!.setString('reviews_db', jsonEncode(_mockReviews.map((e) => e.toMap()).toList()));
-    await _prefs!.setString('downloads_db', jsonEncode(_mockDownloadedLessons));
+    await _prefs!.setString('user_downloads_db', jsonEncode(_mockDownloads));
   }
 
   // --- Download Operations ---
-  List<String> _mockDownloadedLessons = [];
+  Map<String, List<String>> _mockDownloads = {}; // userId -> List<lessonId>
   
-  List<String> get downloadedLessonIds => _mockDownloadedLessons;
-
-  bool isLessonDownloaded(String lessonId) {
-    return _mockDownloadedLessons.contains(lessonId);
+  List<String> getDownloadedLessonIds(String userId) {
+    return _mockDownloads[userId] ?? [];
   }
 
-  Future<void> toggleLessonDownload(String lessonId) async {
-    if (_mockDownloadedLessons.contains(lessonId)) {
-      _mockDownloadedLessons.remove(lessonId);
+  bool isLessonDownloaded(String userId, String lessonId) {
+    return _mockDownloads[userId]?.contains(lessonId) ?? false;
+  }
+
+  Future<void> toggleLessonDownload(String userId, String lessonId) async {
+    if (!_mockDownloads.containsKey(userId)) {
+      _mockDownloads[userId] = [];
+    }
+
+    if (_mockDownloads[userId]!.contains(lessonId)) {
+      _mockDownloads[userId]!.remove(lessonId);
     } else {
-      _mockDownloadedLessons.add(lessonId);
+      _mockDownloads[userId]!.add(lessonId);
     }
     await _saveToStorage();
     notifyListeners();
@@ -248,6 +255,10 @@ class CourseService with ChangeNotifier {
 
   List<String> getEnrolledCourseIds(String userId) {
      return _mockEnrollments.where((e) => e['userId'] == userId).map((e) => e['courseId'] as String).toList();
+  }
+
+  List<Map<String, dynamic>> getStudentEnrollments(String userId) {
+    return _mockEnrollments.where((e) => e['userId'] == userId).toList();
   }
 
   List<Map<String, dynamic>> getEnrolledStudents(String courseId) {

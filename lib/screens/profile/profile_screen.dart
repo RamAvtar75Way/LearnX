@@ -7,6 +7,7 @@ import '../payments/payment_methods_screen.dart';
 import '../../models/user_model.dart';
 import 'edit_profile_screen.dart';
 import '../learner/downloaded_lessons_screen.dart';
+import '../payments/purchase_history_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -103,7 +104,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _ProfileOption(
                 icon: Icons.history,
                 title: "Purchase History",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const PurchaseHistoryScreen()),
+                  );
+                },
               ),
             _ProfileOption(
               icon: Icons.logout,

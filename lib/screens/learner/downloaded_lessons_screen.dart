@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/course_service.dart';
+import '../../services/auth_service.dart';
 import 'lesson_player_screen.dart';
 
 class DownloadedLessonsScreen extends StatelessWidget {
@@ -12,7 +13,14 @@ class DownloadedLessonsScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Downloads")),
       body: Consumer<CourseService>(
         builder: (context, courseService, child) {
-          final downloadedIds = courseService.downloadedLessonIds;
+          final authService = Provider.of<AuthService>(context, listen: false);
+          final userId = authService.userModel?.uid;
+          
+          if (userId == null) {
+             return const Center(child: Text("Please login to view downloads"));
+          }
+
+          final downloadedIds = courseService.getDownloadedLessonIds(userId);
           
           if (downloadedIds.isEmpty) {
             return const Center(
@@ -66,7 +74,7 @@ class DownloadedLessonsScreen extends StatelessWidget {
                 trailing: IconButton(
                   icon: const Icon(Icons.delete, color: Colors.red),
                   onPressed: () {
-                    courseService.toggleLessonDownload(lesson.id);
+                    courseService.toggleLessonDownload(userId, lesson.id);
                   },
                 ),
                 onTap: () {

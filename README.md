@@ -1,142 +1,91 @@
-# LearnX - Mobile Learning Marketplace
+# LearnX - Educational Platform
 
-A starter template for building high-quality Flutter applications. Designed with scalability, maintainability, and clean architecture.
+LearnX is a powerful Learning Management System (LMS) built with Flutter. It bridges the gap between instructors and learners, offering a seamless experience for creating, distributing, and consuming educational content.
 
-## 🚀 Features
+## 🌟 Features
 
-*   **Robust Authentication**: Pre-configured Providers for Login, Signup, and Forgot Password flows.
-*   **Dependency Injection**: Centralized Service Locator using `get_it` for efficient dependency management.
-*   **Networking**: Pre-configured `Dio` client with Interceptors (Auth, Logging) and `flutter_dotenv` for environment configuration.
-*   **Navigation**: Service-based navigation allowing navigation from anywhere (even business logic) without Context.
-*   **Internationalization (i18n)**:
-    *   Full support for **English, Spanish, Arabic**.
-    *   **RTL Support** for Arabic.
-    *   Auto-generation of Dart localization classes.
-*   **Theming**:
-    *   Light & Dark mode support.
-    *   Persisted user preference.
-    *   Tailored Material 3 design system.
-*   **State Management**: Simple and effective state management using `Provider`.
-*   **Secure & Local Storage**: Unified `StorageService` for both `SharedPreferences` and `FlutterSecureStorage`.
+### 👨‍🏫 For Instructors
+*   **Course Management**: Create, edit, and delete courses with ease.
+*   **Content Creation**: Build structured curriculums with Modules and Lessons.
+*   **Rich Media Support**: Upload Videos and Images for lessons.
+*   **Dashboard**: Track performance with real-time statistics (Revenue, Total Students, Course Count).
+*   **Student Insights**: View enrolled students and their details.
+
+### 👨‍🎓 For Students
+*   **Course Discovery**: Browse courses by category or search by title.
+*   **Enrollment System**: Purchase and enroll in courses (Mock Payment integrated).
+*   **Offline Learning**: Download lessons for offline access (User-scoped downloads).
+*   **Progress Tracking**: Track purchased courses via **Purchase History**.
+*   **Interactive Player**: Built-in video player with note-taking capabilities.
+*   **Personalization**: Manage profile, view downloads, and review courses.
 
 ## 🛠 Tech Stack
 
 *   **Framework**: Flutter & Dart
 *   **State Management**: Provider
-*   **Networking**: Dio
-*   **Dependency Injection**: GetIt
-*   **Storage**: Flutter Secure Storage & Shared Preferences
-*   **Icons**: Ionicons
+*   **Architecture**: Service-Locator pattern (GetIt) with Repository pattern concepts.
+*   **Storage**: 
+    *   `shared_preferences`: for local database (Courses, Users, Enrollments).
+    *   `path_provider`: for local file storage.
+*   **Media**: `video_player`, `chewie` for video playback; `image_picker` for content uploads.
+*   **Navigation**: Custom role-based routing.
 
 ## 📂 Project Structure
 
-The project structure is designed to be intuitive and scalable.
-
 ```
 lib/
-├── constants/             # Global constants files
-│   └── storage_keys.dart  # Keys used for local/secure storage
-├── l10n/                  # Localization ARB files
-├── providers/             # State Management (Logic & State)
-│   ├── auth_provider.dart     # Authentication logic
-│   └── settings_provider.dart # Theme & Language logic
-├── screens/               # UI Screens (Pages)
-├── services/              # Infrastructure & External Services
-│   ├── api_service.dart       # API Client wrapper
-│   ├── auth_interceptor.dart  # Auto-injects Bearer token
-│   ├── navigation_service.dart# Context-less navigation 
-│   ├── service_locator.dart   # GetIt DI Setup
-│   └── storage_service.dart   # Unified Storage wrapper
-├── theme/                 # Design System & Theme Config
+├── constants/             # App-wide constants (Keys, Strings)
+├── l10n/                  # Localization files
+├── models/                # Data Models (Course, User, Lesson, etc.)
+├── providers/             # State Management (Auth, Theme)
+├── screens/               # UI Screens
+│   ├── auth/              # Login, Register, Splash
+│   ├── instructor/        # Dashboard, Course Builder
+│   ├── learner/           # Home, Player, Course Details
+│   ├── payments/          # Checkout, Purchase History
+│   └── ...
+├── services/              # Logic Layer (Auth, Course, Storage)
+├── theme/                 # App Theme Configuration
+├── utils/                 # Helpers and Extensions
 ├── widgets/               # Reusable UI Components
-├── app.dart               # Root Widget
 └── main.dart              # Entry Point
 ```
 
 ## ⚡ Getting Started
 
-### 1. Requirements
+### 1. Prerequisites
+*   Flutter SDK (3.0+)
+*   Dart SDK
 
-*   Flutter SDK (Latest Stable)
-*   VS Code or Android Studio
+### 2. Installation
 
-### 2. Setup
-
-clone the repo and install dependencies:
+Clone the repository and install dependencies:
 
 ```bash
+git clone https://github.com/your-username/learnx.git
+cd learnx
 flutter pub get
 ```
 
-### 3. Environment Config
-
-Creation a `.env` file in the root directory don't forget to add it to `.gitignore` if haven't already:
-
-```env
-API_BASE_URL=https://api.yourdomain.com
-```
-
-### 4. Run the App
+### 3. Run the App
 
 ```bash
 flutter run
 ```
 
-## 📖 Development Guide
+*   **Login as Instructor**: Register a account with "Instructor" role.
+*   **Login as Student**: Register a account with "Student" role.
 
-### How to Add a New Page
+## 📱 Screenshots
 
-1.  Create the screen file in `lib/screens/my_new_screen.dart`.
-2.  Register the route in `lib/app.dart` inside the `routes` map.
-    ```dart
-    '/my-new-screen': (context) => const MyNewScreen(),
-    ```
-3.  Navigate to given route:
-    ```dart
-    getIt<Navigation>().navigateTo('/my-new-screen');
-    ```
+| Student Home | Course Detail | Lesson Player |
+|:---:|:---:|:---:|
+| *(Place screenshot here)* | *(Place screenshot here)* | *(Place screenshot here)* |
 
-### How to Add/Edit Translations
+## 🤝 Contributing
 
-1.  Open `lib/l10n/app_en.arb` (English is the template).
-2.  Add your new key-value pair:
-    ```json
-    "helloWorld": "Hello World",
-    "@helloWorld": {
-      "description": "Greeting text"
-    }
-    ```
-3.  Add the same key to `app_es.arb` and `app_ar.arb` with translations.
-4.  Run the app. Flutter will auto-generate the Dart code.
-5.  Use it in code: `AppLocalizations.of(context)!.helloWorld`.
+Contributions are welcome! Please fork the repository and submit a pull request.
 
-### How to Add a New Service
+## 📄 License
 
-1.  Create your service class in `lib/services/`.
-2.  Register it in `lib/services/service_locator.dart`:
-    ```dart
-    getIt.registerLazySingleton<MyService>(() => MyService());
-    ```
-3.  Access it anywhere:
-    ```dart
-    final myService = getIt<MyService>();
-    ```
-
-### Networking
-
-The `ApiService` is already set up with `Dio`.
-
-```dart
-// Example usage
-final api = getIt<ApiService>();
-try {
-  final response = await api.get('/users');
-} catch (e) {
-  print(e);
-}
-```
-
-## 🧹 Maintenance
-
-*   **Linting**: The project uses `flutter_lints`. Run `flutter analyze` to check for issues.
-*   **Testing**: Basic test setup is in `test/`. Run `flutter test` to execute.
+This project is licensed under the MIT License.
